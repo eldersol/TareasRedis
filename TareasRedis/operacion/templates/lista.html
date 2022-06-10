@@ -1,0 +1,26 @@
+{% extends 'encabezado.html' %}
+
+{% block content %}
+<a class="btn btn-success" href="{% url 'nuevo' %}">Nuevo</a>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Numero 1</th>
+      <th scope="col">Numero 2</th>
+      <th scope="col">Operación</th>
+      <th scope="col">Resultado</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for field in form %}
+  <tr>
+    <th scope="row"> {{ field.id }}</th>
+    <th scope="row"> {{ field.numero1 }}</th>
+    <th scope="row"> {{ field.numero2 }}</th>
+    <th scope="row"> {{ field.operador }}</th>
+    <th scope="row"> {{ field.resultado }}</th>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

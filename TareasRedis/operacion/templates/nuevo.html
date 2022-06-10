@@ -1,0 +1,37 @@
+{% extends 'encabezado.html'%}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if form.errors %}
+<div class="alert alert-danger" role="alert">
+  danger
+</div>
+{% endif %}
+
+<h3>Operación</h3>
+<br>
+<form action="{% url 'guardar' %}" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {% if mensaje %}
+  <div class="alert alert-success" role="alert" >
+    Guardado
+  </div>
+  {% endif %}
+  <label for="numero1">Número1: </label>
+  <input id="numero1" type="text" name="numero1" maxlength="5" required>
+  {{ value|linebreaks }}
+  <label for="operador">Operador: </label>
+  <select name="operador" id="operador">
+    <option value="none"></option>
+    <option value="suma">+</option>
+    <option value="resta">-</option>
+    <option value="multiplicacion">*</option>
+    <option value="divicion">/</option>
+  </select>
+  {{ value|linebreaks }}
+  <label for="numero2">Número2: </label>
+  <input id="numero2" type="text" name="numero2" maxlength="5" required>
+  {{ value|linebreaks }}
+  <button type="submit" class="btn btn-primary">Guardar</button>
+  <a class="btn btn-dark" href="{% url 'listar' %}">Cancelar</a>
+</form>
+{% endblock %}

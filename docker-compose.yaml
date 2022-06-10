@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  db_postgres:
+    image: postgres:11.5-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: bitnami/rabbitmq:3.8.27
+
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+
+  worker:
+    image: worker
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    depends_on:
+      - rabbitmq
+      - cache
+
+  django_app:
+    build: .
+    command: 'sh script.sh'
+    volumes:
+      - static:/code/static
+      - .:/code
+    depends_on:
+      - db_postgres
+      - worker
+
+  nginx:
+    image: nginx:1.20-alpine
+    ports:
+      - 8000:80
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - static:/code/static
+    depends_on:
+      - django_app
+
+volumes:
+  .:
+  postgres_data:
+  static:
