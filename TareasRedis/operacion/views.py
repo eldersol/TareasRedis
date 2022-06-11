@@ -14,15 +14,15 @@ class Operaciones(HttpRequest):
         try:
             form = Formulario(request.POST)
             if form.is_valid():
-                tasks = []
                 app = Celery(
-                    'postman',
+                    'task',
                     broker='amqp://user:bitnami@rabbitmq',
+                    #backend='rpc://user:bitnami@rabbitmq',
                 )
-                tasks.append(app.send_task('addTask', (request.POST['numero1'], request.POST['numero2'], '+')))
-
-
+                task1 = app.send_task('addTask', (request.POST['numero1'], request.POST['numero2'], request.POST['operador']))
                 form.save()
+
+                task2 = app.send_task('updateTask')
 
             return render(request, "nuevo.html", {"form": form, "mensaje": "ok"})
         except Exception as e:
