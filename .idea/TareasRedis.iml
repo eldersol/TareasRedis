@@ -5,5 +5,6 @@
     <orderEntry type="jdk" jdkName="Python 3.10 (django_venv)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="celery_rabitmq" />
+    <orderEntry type="module" module-name="FondosPantalla" />
   </component>
 </module>

@@ -1,3 +1,4 @@
 celery
 django-mailjet
 redis
+psycopg2==2.9.3
