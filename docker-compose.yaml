@@ -3,11 +3,17 @@ version: "3"
 services:
   db_postgres:
     image: postgres:11.5-alpine
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=abc123
 
   rabbitmq:
     image: bitnami/rabbitmq:3.8.27
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbit_user
+      - RABBITMQ_DEFAULT_PASS=rabbit_pass
+      - RABBITMQ_DEFAULT_VHOST=/
 
   cache:
     image: redis:6.2-alpine
@@ -16,10 +22,8 @@ services:
       - '6379:6379'
 
   worker:
-    image: worker
-    build:
-      context: ./worker
-      dockerfile: Dockerfile
+    build: .
+    command: celery -A TareasRedis worker --loglevel=INFO -Q celery --concurrency=1 -n worker@task01 --uid=nobody --gid=nogroup
     depends_on:
       - rabbitmq
       - cache

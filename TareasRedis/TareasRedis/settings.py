@@ -130,3 +130,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
+
+
+CELERY_BROKER_URL = 'amqp://nimex:nimex@nimex-rabbit:5672//'
+CELERY_TASK_ROUTES =  {'operacion.task': {'queue': 'celery'}}
